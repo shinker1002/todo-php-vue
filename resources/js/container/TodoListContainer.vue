@@ -4,53 +4,12 @@
     <button @click="showAddTodoForm" class="add-todo-button">Add Todo</button>
 
     <!-- 추가 폼 -->
-    <div v-if="isAddTodoFormVisible" class="add-todo-form">
-      <h2>Add Todo</h2>
-      <form @submit.prevent="addTodo">
-        <label for="title">Title:</label>
-        <input type="text" id="title" v-model="newTodo.title" required>
-
-        <label for="description">Description:</label>
-        <textarea id="description" v-model="newTodo.description"></textarea>
-				
-				<div>
-					<label for="completed">Completed:</label>
-					<input type="checkbox" id="completed" v-model="newTodo.completed">
-				</div>
-
-        <button type="submit">Add</button>
-      </form>
-    </div>
+    <AddTodoForm :isAddTodoFormVisible="isAddTodoFormVisible" :addTodo="addTodo" :newTodo="newTodo" />
 
     <!-- 수정 폼 -->
-    <div v-if="isEditFormVisible" class="edit-todo-form">
-      <h2>Edit Todo</h2>
-      <form @submit.prevent="updateTodo">
-        <label for="editTitle">Title:</label>
-        <input type="text" id="editTitle" v-model="editTodo.title" required>
+    <EditTodoForm :isEditFormVisible="isEditFormVisible"  :updateTodo="updateTodo" :editTodo="editTodo" :cancelEdit="cancelEdit" />
 
-        <label for="editDescription">Description:</label>
-        <textarea id="editDescription" v-model="editTodo.description"></textarea>
-				<div>
-					<label for="editCompleted">Completed:</label>
-					<input type="checkbox" id="editCompleted" v-model="editTodo.completed">
-				</div>
-
-        <button type="submit">Update</button>
-        <button @click="cancelEdit">Cancel</button>
-      </form>
-    </div>
-
-    <ul class="todo-list">
-      <li v-for="todo in todos" :key="todo.id" class="todo-item">
-        <strong>{{ todo.title }}</strong>
-        <p>Description: {{ todo.description }}</p>
-        <p>Completed: {{ todo.completed ? 'Yes' : 'No' }}</p>
-        <button @click="showEditForm(todo)" class="edit-button">Edit</button>
-        <!-- 삭제하기 버튼 -->
-        <button @click="deleteTodo(todo.id)" class="delete-button">Delete</button>
-      </li>
-    </ul>
+    <TodoItem :todos="todos" :showEditForm="showEditForm" :deleteTodo="deleteTodo" />
   </div>
 </template>
 
@@ -58,9 +17,17 @@
 <script>
 	import { ref, onMounted } from 'vue';
 	import TodoApi from '../api/TodoApi';
+	import TodoItem from '../components/todo/TodoItem.vue';
+	import AddTodoForm from '../components/todo/AddTodoForm.vue';
+	import EditTodoForm from '../components/todo/EditTodoForm.vue';
 
 	export default {
     name: "TodoListContainer",
+    components: {
+      TodoItem,
+      AddTodoForm,
+      EditTodoForm,
+    },
 		setup() {
 			const todos = ref([]);
 			const isAddTodoFormVisible = ref(false);
@@ -187,37 +154,6 @@
 </script>
 
 <style scoped>
-  /* Todo 아이템 스타일 */
-  .todo-item {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-  }
-  
-  /* Todo 제목 스타일 */
-  .todo-item strong {
-    color: #333;
-  }
-  
-  /* Todo 설명 스타일 */
-  .todo-item p {
-    color: #666;
-  }
-  
-  /* Todo 완료 여부 스타일 */
-  .todo-item p:last-child {
-    color: #999;
-  }
-  
-  /* Todo 리스트 스타일 제거 */
-  .todo-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    margin-top: 20px;
-  }
-  
   /* Add Todo 버튼 스타일 */
   .add-todo-button {
     background-color: #4caf50;
@@ -228,112 +164,4 @@
     cursor: pointer;
     font-size: 16px;
   }
-  
-  /* 추가 폼 스타일 */
-  .add-todo-form {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    padding: 20px;
-    border-radius: 5px;
-  }
-	.add-todo-form div {
-		display: flex;
-	}
-	.add-todo-form div #completed {
-		width: 30px;
-		margin: 5px 5px 5px 5px;
-	}
-  .add-todo-form h2 {
-    margin-bottom: 10px;
-  }
-  
-  .add-todo-form label {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  .add-todo-form input,
-  .add-todo-form textarea {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    box-sizing: border-box;
-  }
-  
-  .add-todo-form button {
-    background-color: #4caf50;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  .edit-button {
-		background-color: #ffc107;
-		color: white;
-		padding: 5px 10px;
-		border: none;
-		border-radius: 5px;
-		cursor: pointer;
-		font-size: 14px;
-		margin-right: 5px;
-	}
-		/* 수정 폼 스타일 */
-	/* 수정 폼 스타일 */
-	.edit-todo-form {
-		margin-top: 20px;
-		margin-bottom: 20px;
-		border: 1px solid #ccc;
-		padding: 20px;
-		border-radius: 5px;
-	}
-	.edit-todo-form div {
-		display: flex;
-	}
-	.edit-todo-form div #editCompleted {
-		width: 30px;
-		margin: 5px 5px 5px 5px;
-	}
-	.edit-todo-form h2 {
-		margin-bottom: 10px;
-	}
-
-	.edit-todo-form label {
-		display: block;
-		margin-bottom: 5px;
-	}
-
-	.edit-todo-form input,
-	.edit-todo-form textarea {
-		width: 100%;
-		padding: 8px;
-		margin-bottom: 10px;
-		box-sizing: border-box;
-	}
-
-	.edit-todo-form button {
-		background-color: #007bff;
-		color: white;
-		padding: 10px;
-		border: none;
-		border-radius: 5px;
-		cursor: pointer;
-		margin-top: 10px; /* 수정된 부분: 버튼 위 간격 조절 */
-	}
-
-	.edit-todo-form button:last-child {
-		background-color: #dc3545;
-		margin-left: 5px;
-	}
-	/* 삭제하기 버튼 스타일 */
-	.delete-button {
-		background-color: #dc3545;
-		color: white;
-		padding: 5px 10px;
-		border: none;
-		border-radius: 5px;
-		cursor: pointer;
-		font-size: 14px;
-	}
 </style>
