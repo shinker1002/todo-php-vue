@@ -22,12 +22,12 @@
 	import EditTodoForm from '../components/todo/EditTodoForm.vue';
 
 	export default {
-    name: "TodoListContainer",
-    components: {
-      TodoItem,
-      AddTodoForm,
-      EditTodoForm,
-    },
+		name: "TodoListContainer",
+		components: {
+			TodoItem,
+			AddTodoForm,
+			EditTodoForm,
+		},
 		setup() {
 			const todos = ref([]);
 			const isAddTodoFormVisible = ref(false);
