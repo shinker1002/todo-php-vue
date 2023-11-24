@@ -3,13 +3,13 @@
       <h2>Edit Todo</h2>
       <form @submit.prevent="updateTodo">
         <label for="editTitle">Title:</label>
-        <input type="text" id="editTitle" v-model="editTodo.title" required>
+        <input type="text" id="editTitle" v-model="editTodo.value.title" required>
 
         <label for="editDescription">Description:</label>
-        <textarea id="editDescription" v-model="editTodo.description"></textarea>
+        <textarea id="editDescription" v-model="editTodo.value.description"></textarea>
 				<div>
 					<label for="editCompleted">Completed:</label>
-					<input type="checkbox" id="editCompleted" v-model="editTodo.completed">
+					<input type="checkbox" id="editCompleted" v-model="editTodo.value.completed">
 				</div>
 
         <button type="submit">Update</button>
@@ -18,33 +18,31 @@
     </div>
 </template>
 
-<script>
-    export default {
-        name: 'EditTodoForm',
-        props: {
-            isEditFormVisible: {
-                type: Boolean,
-                required: true,
-                default: "Default Message"
-            },
-            updateTodo: {
-                type: Function,
-                required: true,
-                default: "Default Message"
-            },
-            editTodo: {
-                type: Object,
-                required: true,
-                default: "Default Message"
-            },
-            cancelEdit: {
-                type: Function,
-                required: true,
-                default: "Default Message"
-            },
+<script setup>
+import { defineProps } from 'vue';
+const props = defineProps({
+	isEditFormVisible: {
+		type: Boolean,
+		required: true,
+		default: false
+	},
+	updateTodo: {
+		type: Function,
+		required: true,
+		default: () => {}
+	},
+	editTodo: {
+		type: Object,
+		required: true,
+		default: () => ({})
+	},
+	cancelEdit: {
+		type: Function,
+		required: true,
+		default: () => {}
+	},
 
-        }
-    }
+});
 </script>
 
 

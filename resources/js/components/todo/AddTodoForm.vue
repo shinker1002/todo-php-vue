@@ -18,30 +18,26 @@
     </div>
 </template>
 
-<script>
-    export default {
-        name: 'AddTodoForm',
-        props: {
-            isAddTodoFormVisible: {
-                type: Boolean,
-                required: true,
-                default: "Default Message"
-            },
-            addTodo: {
-                type: Function,
-                required: true,
-                default: "Default Message"
-            },
-            newTodo: {
-                type: Object,
-                required: true,
-                default: "Default Message"
-            },
-
-        }
-    }
+<script setup>
+import { defineProps } from 'vue';
+const props = defineProps({
+  isAddTodoFormVisible: {
+    type: Boolean,
+    required: true,
+    default: false, // Default value should be a boolean
+  },
+  addTodo: {
+    type: Function,
+    required: true,
+    default: () => {}, // Default value should be a function
+  },
+  newTodo: {
+    type: Object,
+    required: true,
+    default: () => ({}), // Default value should be an object
+  },
+});
 </script>
-
 
 <style scoped>
     /* 추가 폼 스타일 */

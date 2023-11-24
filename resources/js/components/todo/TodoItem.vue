@@ -13,29 +13,50 @@
     </ul>
 </template>
 
-<script>
+<!-- <script>
     export default {
         name: 'TodoItem',
         props: {
             todos: {
                 type: Array,
                 required: true,
-                default: "Default Message"
+                default: () => []
             },
             showEditForm: {
                 type: Function,
                 required: true,
-                default: "Default Message"
+                default: () => {}
             },
             deleteTodo: {
                 type: Function,
                 required: true,
-                default: "Default Message"
+                default: () => {}
             },
         }
     }
-</script>
+</script> -->
+<script setup>
+import { defineProps } from 'vue';
 
+
+const props = defineProps({
+    todos: {
+        type: Array,
+        required: true,
+        default: () => []
+    },
+    showEditForm: {
+        type: Function,
+        required: true,
+        default: () => {}
+    },
+    deleteTodo: {
+        type: Function,
+        required: true,
+        default: () => {}
+    },
+});
+</script>
 
 <style scoped>
     .todo-list {
